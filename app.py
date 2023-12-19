@@ -46,6 +46,9 @@ source = st.sidebar.selectbox(
 )
 if source == "qudt.org":
     df = pd.read_csv("qudt.csv")
+    df["sourceReference"] = df["sourceReference"].apply(
+        lambda x: x.replace("http://", "https://")
+    )
 if source == "Energistics":
     df = pd.read_csv("energistics.csv")
 if source == "UNECE":
@@ -110,10 +113,10 @@ with c1:
 unit_json = {
     "externalId": externalId,
     "name": name,
-    "longName": item["longName"],
-    "symbol": symbol,
-    "aliasNames": aliasNames.split(","),
     "quantity": quantity,
+    "longName": item["longName"],
+    "aliasNames": aliasNames.split(","),
+    "symbol": symbol,
     "conversion": {"multiplier": multiplier, "offset": offset},
     "source": source,
     "sourceReference": sourceReference,
